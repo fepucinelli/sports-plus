@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="32" fill="rgb(27 30 37)" />
+  <path
+    d="M27 10 H37 V27 H54 V37 H37 V54 H27 V37 H10 V27 H27 Z"
+    fill="rgb(228 24 39)"
+  />
+</svg>

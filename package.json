@@ -1,0 +1,39 @@
+{
+  "name": "sports-plus",
+  "version": "1.0.0",
+  "description": "Browse sports leagues and their badge history, powered by TheSportsDB.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --fix",
+    "*.{js,ts,vue,css,md,json}": "prettier --write"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "nuxt": "^4.4.8",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.39"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.16.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
+    "prettier": "^3.9.4",
+    "typescript": "^6.0.3"
+  }
+}

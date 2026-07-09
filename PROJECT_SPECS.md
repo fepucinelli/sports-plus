@@ -24,7 +24,7 @@ This document follows a requirements → design structure. Requirements describe
 - Badge Lookup: `https://www.thesportsdb.com/api/v1/json/3/search_all_seasons.php?badge=1&id=<id>` — badge/crest artwork per league, across seasons
 - Docs: https://www.thesportsdb.com/free_sports_api
 
-**Known upstream limitation:** the free test key `id=3` returns a small, fixed dataset — exactly 10 leagues from `all_leagues.php` — and is publicly shared across an unknown number of other projects, so it's rate-limited and can return a truncated response instead of an error under load. The response-caching design accounts for this (see Design → Caching Architecture).
+**Known upstream limitation:** the free test key `id=3` returns a small, fixed dataset — exactly 10 leagues from `all_leagues.php` — and is publicly shared across an unknown number of other projects, so it's rate-limited and can return a truncated response under load.
 
 ## 3. Requirements
 
@@ -97,7 +97,6 @@ Acceptance criteria:
 
 - [x] Client-side: repeat navigation to a page already fetched in this session doesn't re-request the same data
 - [x] Server-side: concurrent/repeat visitors across _all_ routes share one cached upstream response per endpoint, independent of which page or query string triggered it
-- [x] A response that looks incomplete/truncated is never cached — validated before being allowed into the cache
 
 ### REQ-8 — Accessibility
 
@@ -180,8 +179,6 @@ Three layers, in order of how much they actually matter:
 3. **Page-level render caching** (`nuxt.config.ts` → `routeRules['/leagues/**'].swr`, `['/favorites'].swr`) — caches the rendered HTML itself, for pages whose output is identical for every visitor. A render-cost optimization on top of layer 2, not a substitute for it.
 
 `/` is deliberately excluded from page-level render caching (layer 3): its output varies by `?search=`/`&sport=`/`&country=`, but `routeRules` caching matches by path only and ignores the query string, so caching it at the page level would risk serving one visitor's search results to another. Response caching (layer 2) doesn't have this problem — it's keyed on the API endpoint, not the page, so `/` is still fully covered there regardless of query string.
-
-`server/api/leagues/index.get.ts` validates that `all_leagues.php` responses contain at least the expected 10 leagues (`MIN_EXPECTED_LEAGUES`) before allowing them into the cache, given the free key's tendency to return a truncated response under load (see Constraints). A short response is treated as a failure and surfaces through the existing `ErrorState`/retry UI rather than being cached.
 
 ### Visual design
 
